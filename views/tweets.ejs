@@ -1,0 +1,72 @@
+<%- include('includes/header') %>
+
+    <main class="container my-4 width-90 width-lg-70">
+      <%- include('includes/flash') %>
+      <% if (user) { %>
+        <div class="mb-5 width-100 width-lg-50 mx-auto">
+            <h3 class="text-center">Add New Tweet</h3>
+            <form action="/create-tweet" id="create-tweet-form" method="POST">
+              <!-- The maximum text is 280 words -->
+                <textarea class="form-control add-new-tweet-field" name="content" id="" cols="20" rows="8" maxlength="3000" placeholder="Enter New Tweet"></textarea>
+                <div class="d-flex">
+                    <input class="ps-2 py-1 add-new-tweet-date mt-3 br-3 bw-1" type="date" name="tweetDate" id="">
+                    <button class="btn ms-auto add-tweet-btn btn-outline-primary mt-3 text-right" type="submit">Submit</button>
+                    <button class="btn btn-outline-primary py-0 mt-3" id="countWordBtn"> Count Words <span id="show">0</span> </button>
+
+                </div>
+                <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+            </form>
+        </div>
+
+          <form action="#">
+            <div class="btn-toolbar justify-content-end align-items-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="input-group">
+                <div class="input-group-text" id="btnGroupAddon2">Tweets per day</div>
+                <input type="text" class="form-control mx-1" value="<%= tweetsPerDay %>" placeholder="Default value" aria-label="Input group example" aria-describedby="btnGroupAddon2" style="border-radius: 5px!important;">
+                <button class="btn form-control btn-primary" style="border-radius: 5px!important;" type="submit">Save</button>
+              </div>
+            </div>
+          </form>
+          <% } %>
+
+
+        <div class="row gy-4 full-tweet-list">
+
+          <% tweets.forEach(function (tweet) { %>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text"> <%= tweet.content %></p>
+                  <% if (user) { %>
+                    <div>
+                      <span data-id="<%= tweet._id %>" href="#" class="btn edit-tweet-btn btn-outline-primary">Edit</span>
+                      <span data-id="<%= tweet._id %>" href="#" class="btn delete-tweet-btn btn-outline-danger">Delete</span>
+                    </div>
+                  <% } %>
+              </div>
+              <div class="card-footer">
+                <% if (user) { %>
+                  <small class="text-muted">
+                    <% if (tweet.updatedDate) { %>
+                      Updated on <%= tweet.updatedDate %>
+                    <% } else { %>
+                      Created on <%= tweet.createdDate %>
+                    <% } %>
+
+                  </small>
+                <% } else { %>
+                  <small class="text-muted">
+                    Tweeted on <%= tweet.tweetDate %>
+                  </small>
+                <% } %>
+              </div>
+              </div>
+            </div>
+
+
+          <% } ) %>
+
+        </div>
+    </main>
+
+  <%- include('includes/footer') %>

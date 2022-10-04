@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <title>Schedule Tweet App</title>
+</head>
+<body>
+    <header class="py-2 py-lg-4" style="background-color: #e3f2fd;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light container" style="background-color: #e3f2fd!important;">
+            <a class="navbar-brand" href="/">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse text-center mt-2 mt-lg-0" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/tweet">Tweets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+              </ul>
+              <ul class="d-flex list-style-none justify-content-center align-items-center mb-0 ps-0 ps-lg-2">
+                <!-- <li class="nav-item">
+                    <a class="btn btn-outline-success py-2 px-4 my-2 my-sm-0 nav-link" href="/index.html">Login</a>
+                </li> -->
+                <% if (user) { %>
+                  <li class="nav-item">
+                      <a class="btn btn-outline-success py-lg-2 px-lg-4 my-2 my-sm-0 nav-link" href="/logout">Log Out</a>
+                  </li>
+                  <% } else { %>
+                    <li class="nav-item">
+                      <a class="btn btn-outline-success py-lg-2 px-lg-4 my-2 my-sm-0 nav-link" href="/register">Sign Up</a>
+                    </li>
+                  <% } %>
+              </ul>
+
+            </div>
+          </nav>
+    </header>
