@@ -1,5 +1,5 @@
 // CRON
-var cron = require('node-cron');
+const CronJob = require('cron').CronJob;
 const usersCollection = require('./db').db().collection("users")
 const tweetCollection = require('./db').db().collection("tweets")
 const ObjectID = require('mongodb').ObjectID
@@ -18,27 +18,26 @@ const tweet =  (newTweet) => {
     })
 }
 
-// tweet()
-// five times everyday, It will pull in the value of the number of
-// tweets per day
-// let hourDiff = 5; //Default Value
+
 let tweetPerDay = 3; //Default Value
 let earliestTweetTime = 7 //in 24hrs clock
 let latestTweetTime = 23 //in 24hrs clock
 let numOfHoursInADay = latestTweetTime - earliestTweetTime
 let hourInterval = Math.ceil(numOfHoursInADay/tweetPerDay)
-// console.log(Math.ceil(numOfHoursInADay/tweetPerDay))
 
-cron.schedule('* 8-20/3 * * * *', async () => {
+
+// five times everyday, It will pull in the value of the number of tweetsperday
+const job = new CronJob('0 0 8-20/3 * * *', async () => {
     let adminDetails = await usersCollection.findOne({role: 'admin'})
     tweetPerDay = adminDetails.tweetPerDay
     let hourInterval = Math.ceil(numOfHoursInADay/tweetPerDay)
 });
 
-// Then it will tweet divide the value by 18, then round
-// it up then return the value to the cron in steps
+// job.start();
 
-cron.schedule(`0 0 ${earliestTweetTime}-${latestTweetTime}/${hourInterval} * * * *`, async () => {
+
+// Find the hour diff, tweet and update value in database
+const job2 = new CronJob(`0 0 ${earliestTweetTime}-${latestTweetTime}/${hourInterval} * * *`, async () => {
     let tweetToPost = await tweetCollection.findOne({status: {$nin:  ['tweeted', 'notWorking']}})
     if (tweetToPost.content){
         let response = await tweet(tweetToPost.content)
@@ -51,14 +50,8 @@ cron.schedule(`0 0 ${earliestTweetTime}-${latestTweetTime}/${hourInterval} * * *
     }
 });
 
-//  async function hello (){
-//     let tweetToPost = await tweetCollection.findOne({status: {$nin:  ['tweeted']}})
-//     let response = await tweet(tweetToPost.content)
-//     if (response.id) {
-//         await tweetCollection.findOneAndUpdate({_id: new ObjectID(tweetToPost._id)}, {$set: {status: "tweeted", tweetDate: new Date()}})
-//     } else {
-//         await tweetCollection.findOneAndUpdate({_id: new ObjectID(tweetToPost._id)}, {$set: {status: "notWorking"}})
-//     }
-// }
+job2.start();
 
-// hello()
+// console.log('System TZ next 10: ', job2.nextDates(10));
+
+
