@@ -33,7 +33,7 @@ const job = new CronJob('0 0 8-20/3 * * *', async () => {
     let hourInterval = Math.ceil(numOfHoursInADay/tweetPerDay)
 });
 
-// job.start();
+job.start();
 
 
 // Find the hour diff, tweet and update value in database
